@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            font-family: "Helvetica Neue",Arial,"Hiragino Kaku Gothic ProN","Hiragino Sans",Meiryo,sans-serif;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color:rgba(0,0,0,0);
+        }
+        html, body {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        .modal_box {
+            width: 100%;
+            height: 100%;
+            background-color: #9ab1ba;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal {
+            width: 20em;
+            height: 15em;
+            max-width: 80%;
+            padding: 2em 1em 1em 1em;
+            background-color: #fff;
+            border-radius: 1em;
+            display: flex;
+            align-items: center;
+            flex-flow: column;
+            box-shadow: 0px 0px 50px 0px rgba(0, 0, 0, 0.5);
+        }
+
+        #pass_area {
+            width: 80%;
+            height: 42px;
+            padding-left: 18px;
+            display: flex;
+            border-radius: 5px;
+            border: solid 1px #e8e8e8;
+            transition: all 0.2s ease-in-out;
+        }
+
+        #pass {
+            width: 100%;
+            height: 100%;
+            font-size: 14px;
+            font-weight: normal;
+            line-height: 42px;
+        }
+        input[type="text"] {
+            margin: 0;
+            padding: 0;
+            background: none;
+            border: none;
+            border-radius: 0;
+            outline: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        input[type="text"]:-webkit-autofill {
+            box-shadow: 0 0 0 999px #fff inset;
+        }
+
+        button {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            outline: none;
+            appearance: none;
+        }
+        #enter {
+            width: 10rem;
+            height: 42px;
+            border-radius: 5px;
+            background-color: #737f8f;
+            color: #fff;
+            transition: all 0.1s ease-in-out;
+            display: block;
+            margin: auto;
+            margin-top: 1rem;
+
+        }
+        .loader {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 3px solid #fff;
+            border-right-color: #b0c6cd;
+            animation: l2 1s infinite linear;
+            margin-left: 10px;
+            opacity: 0  ;
+        }
+        @keyframes l2 {
+            0% {transform: rotate(1turn);}
+            100% {transform: rotate(0turn);}
+        }
+    </style>
+</head>
+<body>
+    <div class="modal_box">
+        <div class="modal">
+            <p>パスワードを入力してください。</p>
+            <span id="message"></span>
+            <div id="pass_area"><input type="text" style="ime-mode: inactive" id="pass"></div>
+            <button id="enter">
+                <div style="transform: translateX(15px);
+                display: flex;
+                align-items: center;
+                justify-content: center;">
+                    <span>ログイン</span><div class="loader"></div>
+                </div>
+            </button>
+
+        </div>
+    </div>
+
+    <script>
+        
+        let i = 0;
+        document.querySelector("#enter").addEventListener("click", function() {
+            document.querySelector(".loader").style.opacity=1;
+            let xhr = new XMLHttpRequest();
+            let pass_word = document.querySelector("#pass").value;
+            console.log(pass_word);
+            xhr.open('GET', `https://script.google.com/macros/s/AKfycbxWAdCGcGjh8sUJtOfJK47seLYsMezweHTUan3ZBksaQPadsZm9DG93zFoaOLpACn6v/exec?pass=${pass_word}`);
+            xhr.send();
+            
+            xhr.onreadystatechange = function() {
+                if(xhr.status === 200) {
+
+                    if (JSON.parse(xhr.responseText || "null").statusCode == 200) {
+                        if (i == 0) {
+                            document.querySelector("body").innerHTML = '<style>.nice-select {-webkit-tap-highlight-color: transparent;background-color: #fff;border-radius: 5px;border: solid 1px #e8e8e8;box-sizing: border-box;clear: both;cursor: pointer;display: block;float: left;font-family: inherit;font-size: 14px;font-weight: normal;height: 42px;line-height: 40px;outline: none;padding-left: 18px;padding-right: 30px;position: relative;text-align: left !important;-webkit-transition: all 0.2s ease-in-out;transition: all 0.2s ease-in-out;-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;white-space: nowrap;width: auto;}.nice-select:hover {border-color: #dbdbdb;}.nice-select:active,.nice-select.open,.nice-select:focus {border-color: #999;}.nice-select:after {border-bottom: 2px solid #999;border-right: 2px solid #999;content: "";display: block;height: 5px;margin-top: -4px;pointer-events: none;position: absolute;right: 12px;top: 50%;-webkit-transform-origin: 66% 66%;-ms-transform-origin: 66% 66%;transform-origin: 66% 66%;-webkit-transform: rotate(45deg);-ms-transform: rotate(45deg);transform: rotate(45deg);-webkit-transition: all 0.15s ease-in-out;transition: all 0.15s ease-in-out;width: 5px;}.nice-select.open:after {-webkit-transform: rotate(-135deg);-ms-transform: rotate(-135deg);transform: rotate(-135deg);}.nice-select.open .list {opacity: 1;pointer-events: auto;-webkit-transform: scale(1) translateY(0);-ms-transform: scale(1) translateY(0);transform: scale(1) translateY(0);}.nice-select.disabled {border-color: #ededed;color: #999;pointer-events: none;}.nice-select.disabled:after {border-color: #cccccc;}.nice-select.wide {width: 100%;}.nice-select.wide .list {left: 0 !important;right: 0 !important;}.nice-select.right {float: right;}.nice-select.right .list {left: auto;right: 0;}.nice-select.small {font-size: 12px;height: 36px;line-height: 34px;}.nice-select.small:after {height: 4px;width: 4px;}.nice-select.small .option {line-height: 34px;min-height: 34px;}.nice-select .list {background-color: #fff;border-radius: 5px;box-shadow: 0 0 0 1px rgba(68, 68, 68, 0.11);box-sizing: border-box;margin-top: 4px;opacity: 0;overflow: hidden;padding: 0;pointer-events: none;position: absolute;top: 100%;left: 0;-webkit-transform-origin: 50% 0;-ms-transform-origin: 50% 0;transform-origin: 50% 0;-webkit-transform: scale(0.75) translateY(-21px);-ms-transform: scale(0.75) translateY(-21px);transform: scale(0.75) translateY(-21px);-webkit-transition: all 0.2s cubic-bezier(0.5, 0, 0, 1.25), opacity 0.15s ease-out;transition: all 0.2s cubic-bezier(0.5, 0, 0, 1.25), opacity 0.15s ease-out;z-index: 9;}.nice-select .list:hover .option:not(:hover) {background-color: transparent !important;}.nice-select .option {cursor: pointer;font-weight: 400;line-height: 40px;list-style: none;min-height: 40px;outline: none;padding-left: 18px;padding-right: 29px;text-align: left;-webkit-transition: all 0.2s;transition: all 0.2s;}.nice-select .option:hover,.nice-select .option.focus,.nice-select .option.selected.focus {background-color: #f6f6f6;}.nice-select .option.selected {font-weight: bold;}.nice-select .option.disabled {background-color: transparent;color: #999;cursor: default;}.no-csspointerevents .nice-select .list {display: none;}.no-csspointerevents .nice-select.open .list {display: block;}</style><style>/*reset*/input[type="text"] {margin: 0;padding: 0;background: none;border: none;border-radius: 0;outline: none;-webkit-appearance: none;-moz-appearance: none;appearance: none;}input[type="text"]:-webkit-autofill {box-shadow: 0 0 0 999px #fff inset;}button {background-color: transparent;border: none;cursor: pointer;padding: 0;outline: none;appearance: none;}* {box-sizing: border-box;font-family: "Helvetica Neue",Arial,"Hiragino Kaku Gothic ProN","Hiragino Sans",Meiryo,sans-serif;}html,body {width: 100%;height: 100%;margin: 0;padding: 0 5% 0 5%;}.nice-select {width: 100%;}.note {width: 100%;height: auto;padding: 1rem;border-radius: 0.5rem;margin-bottom: 1rem;}.note.info {background: #eaf5f9;}.note.info h2 {color: #27acd9;}.note.warning {background: #fff0b3;}.note.warning h2 {color: #ae8803;}.note p {margin-left: 1rem;word-break: auto-phrase;}#calculation {width: 10rem;height: 42px;border-radius: 5px;background-color: #737f8f;color: #fff;transition: all 0.1s ease-in-out;display: block;margin: auto;margin-top: 1rem;}#point_area {width: 100%;height: 42px;padding-left: 18px;display: flex;border-radius: 5px;border: solid 1px #e8e8e8;transition: all 0.2s ease-in-out;}#point {width: 100%;height: 100%;font-size: 14px;font-weight: normal;line-height: 42px;}.table_highschool {border-collapse: collapse;width: 100%;max-width: 700px;margin: auto;}.table_highschool tr {background-color: rgba(126, 173, 195, 0.2);}.table_highschool tr:nth-child(odd) {background-color: rgba(126, 173, 195, 0.05);}.table_highschool th,.table_highschool td {padding: 1em;}.table_highschool th {background: rgba(126, 173, 195, 0.65);}.sd {font-weight: bold;text-align: center;}.table_highschool th {font-weight: bold;text-align: center;width: 20%;min-width: 4em;}</style><h1>偏差値を知ろう!!</h1><div class="note info"><h2>┃偏差値とは</h2><p>偏差値は50を基準とした数値でテストの難易度に関係なく全体の中での自分の位置を知ることができます。偏差値が50よりも高ければ平均より上、低ければ平均より下にいるということになります。</p></div><div class="note warning"><h2>&ensp;<img style="width: 1.5em;vertical-align: top;"src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTUuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+CjxzdmcgdmVyc2lvbj0iMS4xIiBpZD0iJiN4MzBFQzsmI3gzMEE0OyYjeDMwRTQ7JiN4MzBGQztfMSIKCSB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4PSIwcHgiIHk9IjBweCIgd2lkdGg9IjE0MS43MzJweCIKCSBoZWlnaHQ9IjE0MS43MzJweCIgdmlld0JveD0iMCAwIDE0MS43MzIgMTQxLjczMiIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMTQxLjczMiAxNDEuNzMyOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxnPgoJPHBhdGggc3R5bGU9ImZpbGwtcnVsZTpldmVub2RkO2NsaXAtcnVsZTpldmVub2RkO2ZpbGw6I0Y3RDY2NDsiIGQ9Ik04MS4xNDcsMjEuMzRjLTQuNDU5LTYuMzAyLTE2Ljc4Ny01Ljk0LTIwLjY3LDAKCQlsLTQ5LjQ3NSw4NS43NDdjLTMuMjA1LDYuMzMxLDIuNjQ1LDE3LjE4NiwxMC4zMzIsMTcuODk3aDk5LjA2M2M3LjY4OC0wLjcxMiwxMy41MzctMTEuNTY2LDEwLjMzMi0xNy44OTdMODEuMTQ3LDIxLjM0eiIvPgoJPHBhdGggc3R5bGU9ImZpbGwtcnVsZTpldmVub2RkO2NsaXAtcnVsZTpldmVub2RkO2ZpbGw6IzRGNEY0RjsiIGQ9Ik02Mi45NTMsMTAxLjY3YzAsNC4zNjksMy41NDQsNy45MTMsNy45MTMsNy45MTMKCQlzNy45MTMtMy41NDQsNy45MTMtNy45MTNzLTMuNTQ0LTcuOTEzLTcuOTEzLTcuOTEzUzYyLjk1Myw5Ny4zMDEsNjIuOTUzLDEwMS42N3ogTTcwLjg2Niw0Mi4zMjNjLTEuNSwwLTIuODg1LDAuNTE0LTQuMDY2LDEuNDA0CgkJYy0yLjMwNCwxLjM4NS0zLjg0NywzLjkwOC0zLjg0Nyw2Ljc5MWMwLDAuMTctMC4wOSwxLjkwNy0wLjA1NywyLjYzMWwyLjU3OCwyNy44OTFjMC4xNzIsMy42NjgsMS45NTgsNi41LDUuMzkyLDYuNQoJCXM1LjIyLTIuODMyLDUuMzkzLTYuNWwyLjU3Ny0yNy44OTFjMC4wMzQtMC43MjQtMC4wNTctMi40NjEtMC4wNTctMi42MzFjMC0yLjg4My0xLjU0My01LjQwNi0zLjg0Ny02Ljc5MQoJCUM3My43NTEsNDIuODM3LDcyLjM2Niw0Mi4zMjMsNzAuODY2LDQyLjMyM3oiLz4KPC9nPgo8L3N2Zz4K"alt="">注意<img style="width: 1.5em;vertical-align: top;"src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTUuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+CjxzdmcgdmVyc2lvbj0iMS4xIiBpZD0iJiN4MzBFQzsmI3gzMEE0OyYjeDMwRTQ7JiN4MzBGQztfMSIKCSB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4PSIwcHgiIHk9IjBweCIgd2lkdGg9IjE0MS43MzJweCIKCSBoZWlnaHQ9IjE0MS43MzJweCIgdmlld0JveD0iMCAwIDE0MS43MzIgMTQxLjczMiIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMTQxLjczMiAxNDEuNzMyOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxnPgoJPHBhdGggc3R5bGU9ImZpbGwtcnVsZTpldmVub2RkO2NsaXAtcnVsZTpldmVub2RkO2ZpbGw6I0Y3RDY2NDsiIGQ9Ik04MS4xNDcsMjEuMzRjLTQuNDU5LTYuMzAyLTE2Ljc4Ny01Ljk0LTIwLjY3LDAKCQlsLTQ5LjQ3NSw4NS43NDdjLTMuMjA1LDYuMzMxLDIuNjQ1LDE3LjE4NiwxMC4zMzIsMTcuODk3aDk5LjA2M2M3LjY4OC0wLjcxMiwxMy41MzctMTEuNTY2LDEwLjMzMi0xNy44OTdMODEuMTQ3LDIxLjM0eiIvPgoJPHBhdGggc3R5bGU9ImZpbGwtcnVsZTpldmVub2RkO2NsaXAtcnVsZTpldmVub2RkO2ZpbGw6IzRGNEY0RjsiIGQ9Ik02Mi45NTMsMTAxLjY3YzAsNC4zNjksMy41NDQsNy45MTMsNy45MTMsNy45MTMKCQlzNy45MTMtMy41NDQsNy45MTMtNy45MTNzLTMuNTQ0LTcuOTEzLTcuOTEzLTcuOTEzUzYyLjk1Myw5Ny4zMDEsNjIuOTUzLDEwMS42N3ogTTcwLjg2Niw0Mi4zMjNjLTEuNSwwLTIuODg1LDAuNTE0LTQuMDY2LDEuNDA0CgkJYy0yLjMwNCwxLjM4NS0zLjg0NywzLjkwOC0zLjg0Nyw2Ljc5MWMwLDAuMTctMC4wOSwxLjkwNy0wLjA1NywyLjYzMWwyLjU3OCwyNy44OTFjMC4xNzIsMy42NjgsMS45NTgsNi41LDUuMzkyLDYuNQoJCXM1LjIyLTIuODMyLDUuMzkzLTYuNWwyLjU3Ny0yNy44OTFjMC4wMzQtMC43MjQtMC4wNTctMi40NjEtMC4wNTctMi42MzFjMC0yLjg4My0xLjU0My01LjQwNi0zLjg0Ny02Ljc5MQoJCUM3My43NTEsNDIuODM3LDcyLjM2Niw0Mi4zMjMsNzAuODY2LDQyLjMyM3oiLz4KPC9nPgo8L3N2Zz4K"alt=""></h2><ul><li>この偏差値は得点分布表をもとに求められるため正確ではありません。</li><li>この偏差値は高く出る傾向があります。</li><li>自分の偏差値を詳しく知りたい人は模試を受けましょう。</li></ul></div><form onsubmit="return false;"><span>テスト</span><select style="display: none;" id="exam"><option>実力テスト第1回</option></select><br><span>科目</span><select style="display: none;" id="subject"><option>国語</option><option>社会</option><option>数学</option><option>理科</option><option>英語</option><option>5教科</option></select><br><span>点数</span><div id="point_area"><input type="text" inputmode="numeric" style="ime-mode: inactive" id="point"></div><span id="message"></span><p style="text-align: center;" id="result"></p><button id="calculation">算出</button></form>';
+                            var s = document.createElement("script");
+                            s.innerHTML = JSON.parse(xhr.responseText || "null").message;
+                            console.log(JSON.parse(xhr.responseText || "null").message);
+
+                            var ele = document.body;
+                            ele.appendChild(s);
+                            i = 1;
+                        }
+                    } else {
+                        document.querySelector("#message").textContent = "パスワードが違います。";
+                        document.querySelector(".loader").style.opacity=0;
+                    }
+                } else {
+
+                }
+            }
+        });
+    </script>
+</body>
+</html>
